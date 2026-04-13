@@ -3,10 +3,10 @@ pipeline {
 
     stages {
 
-        stage('Clone Repo') {
+        stage('Checkout') {
             steps {
-                git credentialsId: 'github-credentials',
-                    url: 'https://github.com/radcod/lab6'
+                cleanWs()
+                checkout scm
             }
         }
 
