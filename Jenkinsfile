@@ -6,7 +6,7 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 git credentialsId: 'github-credentials',
-                    url: 'https://github.com/radcod/lab6.git'
+                    url: 'https://github.com/radcod/lab6'
             }
         }
 
