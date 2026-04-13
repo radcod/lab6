@@ -2,36 +2,37 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/your-username/your-repo.git'
+                git credentialsId: 'github-credentials',
+                    url: 'https://github.com/radcod/lab6.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'python3 -m pip install -r requirements.txt'
+            }
+        }
+
+        stage('Run Training') {
+            steps {
+                sh 'python3 train.py'
+            }
+        }
+
+        stage('Evaluate Model') {
+            steps {
+                sh 'python3 evaluate.py'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("your-dockerhub-username/mlops-app")
+                    docker.build("radhika2193/mlops-app")
                 }
-            }
-        }
-
-        stage('Run Training') {
-            steps {
-                sh 'python train.py'
-            }
-        }
-
-        stage('Evaluate Model') {
-            steps {
-                sh 'python evaluate.py'
-            }
-        }
-
-        stage('Print Details') {
-            steps {
-                echo "Name: YOUR NAME"
-                echo "Roll No: YOUR ROLL NO"
             }
         }
 
@@ -39,9 +40,16 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'dockerhub-credentials') {
-                        docker.image("your-dockerhub-username/mlops-app").push('latest')
+                        docker.image("radhika2193/mlops-app").push('latest')
                     }
                 }
+            }
+        }
+
+        stage('Print Details') {
+            steps {
+                echo "Name: Radhika Nambiar"
+                echo "Roll No: 2022bcs0148"
             }
         }
     }
