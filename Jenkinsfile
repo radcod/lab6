@@ -1,30 +1,27 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.10'
+        }
+    }
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                cleanWs()
-                checkout scm
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m pip install -r requirements.txt'
+                sh 'pip install -r requirements.txt'
             }
         }
 
         stage('Run Training') {
             steps {
-                sh 'python3 train.py'
+                sh 'python train.py'
             }
         }
 
         stage('Evaluate Model') {
             steps {
-                sh 'python3 evaluate.py'
+                sh 'python evaluate.py'
             }
         }
 
